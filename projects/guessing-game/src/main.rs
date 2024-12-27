@@ -18,13 +18,25 @@ fn main() {
             .read_line(&mut guess)
             .expect("Couldn't read line");
 
-        let guess: u32 = guess.trim().parse().expect("Please type a number");
+        let guess: i32 = match guess.trim().parse() {
+            Ok(num) => num,
+            // pattern match on expected value
+            Err(_) => {
+                println!("\nPlease enter a number\n");
+                continue;
+            }
+        };
+
+        println!("you guessed: {}", guess);
+
         match guess.cmp(&secret_number) {
-            Ordering::Equal => println!("Correct match"),
+            Ordering::Equal => {
+                println!("Correct!");
+                break;
+            }
             Ordering::Greater => println!("Guess too big"),
             Ordering::Less => println!("Guess too small"),
         };
-        println!("you guessed: {}", guess);
     }
 
     // overshadow previous "guess"
